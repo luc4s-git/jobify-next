@@ -10,8 +10,6 @@ import { usePathname } from 'next/navigation';
 export default function Sidebar() {
   const pathname = usePathname();
 
-  console.log(pathname);
-
   return (
     <aside className="py-4 px-8 bg-muted h-full flex flex-col items-center">
       <Image src={LogoSVG} alt="jobify logo"></Image>
