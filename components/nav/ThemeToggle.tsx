@@ -7,7 +7,7 @@ import {
   DropdownMenuTrigger,
 } from '../ui/dropdown-menu';
 
-import { Moon, Sun } from 'lucide-react';
+import { Loader2, Moon, Sun } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import { useEffect, useState } from 'react';
 import { Button } from '../ui/button';
@@ -20,15 +20,19 @@ export default function ThemeToggle() {
     setMounted(true);
   }, []);
 
-  if (!mounted) {
-    return null;
-  }
-
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button size={'icon'} variant={'outline'}>
-          {theme === 'light' ? <Sun /> : <Moon />}
+        <Button disabled={!mounted} size={'icon'} variant={'outline'}>
+          {mounted ? (
+            theme === 'light' ? (
+              <Sun className="w-[1.2rem] h-[1.2rem]" />
+            ) : (
+              <Moon className="w-[1.2rem] h-[1.2rem]" />
+            )
+          ) : (
+            <Loader2 className="w-[1.2rem] h-[1.2rem] animate-spin" />
+          )}
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
