@@ -1,5 +1,5 @@
-import Navbar from '@/components/nav/Navbar';
-import Sidebar from '@/components/nav/Sidebar';
+import Navbar from '@/components/Nav/Navbar';
+import Sidebar from '@/components/Nav/Sidebar';
 
 export default function Layout({ children }: React.PropsWithChildren) {
   return (
