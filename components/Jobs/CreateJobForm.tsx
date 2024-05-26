@@ -13,6 +13,8 @@ import { CustomFormField, CustomFormSelect } from './FormComponents';
 import { Button } from '../ui/button';
 import { Form } from '../ui/form';
 
+import { createJobAction } from '@/utils/actions/actions';
+
 export function CreateJobForm() {
   const form = useForm<CreateAndEditJobType>({
     resolver: zodResolver(createAndEditJobSchema),
@@ -26,7 +28,7 @@ export function CreateJobForm() {
   });
 
   function onSubmit(values: CreateAndEditJobType) {
-    console.log(values);
+    createJobAction(values);
   }
 
   return (
