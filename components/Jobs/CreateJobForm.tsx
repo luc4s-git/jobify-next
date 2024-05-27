@@ -62,7 +62,7 @@ export function CreateJobForm() {
   });
 
   function onSubmit(values: CreateAndEditJobType) {
-    if (values) mutate(values);
+    mutate(values);
   }
 
   return (
