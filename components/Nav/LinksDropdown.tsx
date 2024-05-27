@@ -7,7 +7,7 @@ import {
 
 import { Button } from '@/components/ui/button';
 import { AlignLeft } from 'lucide-react';
-import navLinks from '@/utils/links';
+import navLinks from '@/utils/data/links';
 import Link from 'next/link';
 
 export default function LinksDropdown() {

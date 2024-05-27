@@ -14,6 +14,7 @@ import { Button } from '../ui/button';
 import { Form } from '../ui/form';
 
 import { createJobAction } from '@/utils/actions/actions';
+import { useToast } from '../ui/use-toast';
 
 export function CreateJobForm() {
   const form = useForm<CreateAndEditJobType>({
@@ -27,8 +28,15 @@ export function CreateJobForm() {
     },
   });
 
+  const { toast } = useToast();
+
   function onSubmit(values: CreateAndEditJobType) {
     createJobAction(values);
+    // toast({
+    //   title: 'Job created',
+    //   description:
+    //     'You job was successfully created, check it out at all jobs page.',
+    // });
   }
 
   return (
