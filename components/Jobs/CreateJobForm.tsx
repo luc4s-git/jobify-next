@@ -32,11 +32,11 @@ export function CreateJobForm() {
 
   function onSubmit(values: CreateAndEditJobType) {
     createJobAction(values);
-    // toast({
-    //   title: 'Job created',
-    //   description:
-    //     'You job was successfully created, check it out at all jobs page.',
-    // });
+    toast({
+      title: 'Job created',
+      description:
+        'You job was successfully created, check it out at all jobs page.',
+    });
   }
 
   return (
