@@ -1,3 +1,3 @@
 export default function DeleteJobBtn() {
-  return <div>DeleteJobBtn</div>;
+  return <div>delete</div>;
 }
