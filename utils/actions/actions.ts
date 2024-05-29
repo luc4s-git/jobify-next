@@ -69,8 +69,12 @@ export async function getAllJobsAction({
       whereClause = {
         ...whereClause,
         OR: [
-          { position: { contains: search } },
-          { company: { contains: search } },
+          {
+            position: { contains: search },
+          },
+          {
+            company: { contains: search },
+          },
         ],
       };
     }
