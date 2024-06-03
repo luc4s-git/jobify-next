@@ -19,6 +19,21 @@ function authenticateAndRedirect(): string {
   return userId;
 }
 
+export async function deleteJobAction(jobId: string) {
+  try {
+    const deleteUsers = await prisma.job.delete({
+      where: {
+        id: jobId,
+      },
+    });
+
+    return deleteUsers;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+}
+
 export async function createJobAction(
   values: CreateAndEditJobType
 ): Promise<JobType | null> {
