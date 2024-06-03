@@ -14,6 +14,7 @@ import { Prisma } from '@prisma/client';
 
 function authenticateAndRedirect(): string {
   const { userId } = auth();
+  console.log(userId);
   if (!userId) redirect('/');
 
   return userId;
@@ -159,5 +160,19 @@ export async function getAllJobsAction({
   } catch (error) {
     console.log(error);
     return { jobs: [], count: 0, page: 1, totalPages: 0 };
+  }
+}
+
+export async function getStatsAction() {
+  const userId = authenticateAndRedirect();
+
+  try {
+    const groupJobs = await prisma.job.groupBy({
+      by: ['status'],
+    });
+
+    return groupJobs;
+  } catch (error) {
+    return null;
   }
 }

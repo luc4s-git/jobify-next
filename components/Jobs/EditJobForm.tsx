@@ -41,7 +41,7 @@ export default function EditJobForm({ jobId }: { jobId: string }) {
       });
 
       queryClient.invalidateQueries({ queryKey: ['jobs'] });
-      queryClient.invalidateQueries({ queryKey: ['stats'] });
+      queryClient.invalidateQueries({ queryKey: ['jobs', jobId] });
       queryClient.invalidateQueries({ queryKey: ['charts'] });
 
       router.push('/jobs');
