@@ -19,6 +19,30 @@ function authenticateAndRedirect(): string {
   return userId;
 }
 
+export async function getSingleJobAction(
+  jobId: string
+): Promise<JobType | null> {
+  let job: JobType | null = null;
+  const userId = authenticateAndRedirect();
+
+  try {
+    job = await prisma.job.findUnique({
+      where: {
+        id: jobId,
+        clerkId: userId,
+      },
+    });
+  } catch (error) {
+    job = null;
+  }
+
+  if (!job) {
+    redirect('/jobs');
+  }
+
+  return job;
+}
+
 export async function deleteJobAction(jobId: string): Promise<JobType | null> {
   const userId = authenticateAndRedirect();
 
@@ -32,7 +56,6 @@ export async function deleteJobAction(jobId: string): Promise<JobType | null> {
 
     return job;
   } catch (error) {
-    console.log(error);
     return null;
   }
 }
