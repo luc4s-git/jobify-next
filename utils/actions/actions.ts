@@ -19,15 +19,18 @@ function authenticateAndRedirect(): string {
   return userId;
 }
 
-export async function deleteJobAction(jobId: string) {
+export async function deleteJobAction(jobId: string): Promise<JobType | null> {
+  const userId = authenticateAndRedirect();
+
   try {
-    const deleteUsers = await prisma.job.delete({
+    const job: JobType = await prisma.job.delete({
       where: {
         id: jobId,
+        clerkId: userId,
       },
     });
 
-    return deleteUsers;
+    return job;
   } catch (error) {
     console.log(error);
     return null;
