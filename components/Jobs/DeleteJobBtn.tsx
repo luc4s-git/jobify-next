@@ -2,10 +2,14 @@
 
 import { Button } from '../ui/button';
 import { deleteJobAction } from '@/utils/actions/actions';
-import { useMutation } from '@tanstack/react-query';
-import { toast } from '../ui/use-toast';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useToast } from '../ui/use-toast';
 
 export default function DeleteJobBtn({ jobId }: { jobId: string }) {
+  const { toast } = useToast();
+
+  const queryClient = useQueryClient();
+
   const { mutate, isPending } = useMutation({
     mutationFn: (id: string) => deleteJobAction(id),
     onSuccess: (data) => {
@@ -17,6 +21,10 @@ export default function DeleteJobBtn({ jobId }: { jobId: string }) {
         });
         return;
       }
+
+      queryClient.invalidateQueries({ queryKey: ['jobs'] });
+      queryClient.invalidateQueries({ queryKey: ['stats'] });
+      queryClient.invalidateQueries({ queryKey: ['charts'] });
 
       toast({
         title: 'Job Deleted',
