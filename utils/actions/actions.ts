@@ -14,7 +14,6 @@ import { Prisma } from '@prisma/client';
 
 function authenticateAndRedirect(): string {
   const { userId } = auth();
-  console.log(userId);
   if (!userId) redirect('/');
 
   return userId;
@@ -163,16 +162,39 @@ export async function getAllJobsAction({
   }
 }
 
-export async function getStatsAction() {
+export async function getStatsAction(): Promise<{
+  pending: number;
+  interview: number;
+  declined: number;
+} | null> {
   const userId = authenticateAndRedirect();
 
   try {
-    const groupJobs = await prisma.job.groupBy({
+    const stats = await prisma.job.groupBy({
+      where: {
+        clerkId: userId,
+      },
       by: ['status'],
+      _count: {
+        status: true,
+      },
     });
 
-    return groupJobs;
+    const statsObject = stats.reduce((acc, curr) => {
+      acc[curr.status] = curr._count.status;
+      return acc;
+    }, {} as Record<string, number>);
+
+    // overwrite the default stats
+    const defaultStats = {
+      pending: 0,
+      declined: 0,
+      interview: 0,
+      ...statsObject,
+    };
+
+    return defaultStats;
   } catch (error) {
-    return null;
+    redirect('/jobs');
   }
 }
