@@ -1,8 +1,9 @@
 import StatsContainer from '@/components/Stats/StatsContainer';
-import { getStatsAction } from '@/utils/actions/actions';
+import { getStatsAction, getChartsDataAction } from '@/utils/actions/actions';
 
 export default async function StatsPage() {
   const stats = await getStatsAction();
+  const chartsData = await getChartsDataAction();
 
   if (!stats) {
     return <h1>no stats found</h1>;
