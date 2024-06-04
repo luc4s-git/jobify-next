@@ -1,7 +1,27 @@
+import StatsContainer from '@/components/Stats/StatsContainer';
 import { getStatsAction } from '@/utils/actions/actions';
 
 export default async function StatsPage() {
   const stats = await getStatsAction();
 
-  return <div>StatsPage</div>;
+  if (!stats) {
+    return <h1>no stats found</h1>;
+  }
+
+  return (
+    <div className="grid md:grid-cols-2 lg:grid-cols-3 items-center gap-4">
+      <StatsContainer
+        stat={stats.pending}
+        statTitle={'Pending Jobs'}
+      ></StatsContainer>
+      <StatsContainer
+        stat={stats.interview}
+        statTitle={'Interviews Set'}
+      ></StatsContainer>
+      <StatsContainer
+        stat={stats.declined}
+        statTitle={'Jobs Declined'}
+      ></StatsContainer>
+    </div>
+  );
 }
