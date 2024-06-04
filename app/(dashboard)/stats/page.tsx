@@ -1,28 +1,29 @@
 import StatsContainer from '@/components/Stats/StatsContainer';
 import { getStatsAction, getChartsDataAction } from '@/utils/actions/actions';
+import {
+  dehydrate,
+  HydrationBoundary,
+  QueryClient,
+} from '@tanstack/react-query';
 
 export default async function StatsPage() {
-  const stats = await getStatsAction();
-  const chartsData = await getChartsDataAction();
+  const queryClient = new QueryClient();
 
-  if (!stats) {
-    return <h1>no stats found</h1>;
-  }
+  await queryClient.prefetchQuery({
+    queryKey: ['stats'],
+    queryFn: () => getStatsAction(),
+  });
+
+  await queryClient.prefetchQuery({
+    queryKey: ['charts'],
+    queryFn: () => getChartsDataAction(),
+  });
 
   return (
-    <div className="grid md:grid-cols-2 lg:grid-cols-3 items-center gap-4">
-      <StatsContainer
-        stat={stats.pending}
-        statTitle={'Pending Jobs'}
-      ></StatsContainer>
-      <StatsContainer
-        stat={stats.interview}
-        statTitle={'Interviews Set'}
-      ></StatsContainer>
-      <StatsContainer
-        stat={stats.declined}
-        statTitle={'Jobs Declined'}
-      ></StatsContainer>
-    </div>
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <div>
+        <StatsContainer />
+      </div>
+    </HydrationBoundary>
   );
 }

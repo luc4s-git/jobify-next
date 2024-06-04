@@ -231,8 +231,6 @@ export async function getChartsDataAction(): Promise<
       return acc;
     }, [] as Array<{ date: string; count: number }>);
 
-    console.log(applicationsPerMonth);
-
     return applicationsPerMonth;
   } catch (error) {
     redirect('/jobs');
