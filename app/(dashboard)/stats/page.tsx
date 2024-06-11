@@ -1,3 +1,4 @@
+import ChartsContainer from '@/components/Stats/ChartsContainer';
 import StatsContainer from '@/components/Stats/StatsContainer';
 import { getStatsAction, getChartsDataAction } from '@/utils/actions/actions';
 import {
@@ -23,6 +24,7 @@ export default async function StatsPage() {
     <HydrationBoundary state={dehydrate(queryClient)}>
       <div>
         <StatsContainer />
+        <ChartsContainer />
       </div>
     </HydrationBoundary>
   );
