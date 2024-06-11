@@ -4,6 +4,7 @@ import JobCard from './JobCard';
 import { useSearchParams } from 'next/navigation';
 import { getAllJobsAction } from '@/utils/actions/actions';
 import { useQuery } from '@tanstack/react-query';
+import PaginationContainer from './PaginationContainer';
 
 export default function JobsList() {
   const searchParams = useSearchParams();
@@ -19,12 +20,23 @@ export default function JobsList() {
 
   const jobs = data?.jobs || [];
 
-  if (isPending) return <h2 className="text-xl">Please wait...</h2>;
+  const count = data?.count || 0;
+  const page = data?.page || 1;
+  const totalPages = data?.totalPages || 0;
 
+  if (isPending) return <h2 className="text-xl">Please wait...</h2>;
   if (jobs.length < 1) return <h2 className="text-xl">No jobs found.</h2>;
 
   return (
     <>
+      <div className="flex items-center justify-between mb-8">
+        <h2 className="text-xl font-semibold capitalize">
+          {count} job{count > 1 && 's'} found
+        </h2>
+        {totalPages < 2 ? null : (
+          <PaginationContainer currentPage={page} totalPages={totalPages} />
+        )}
+      </div>
       {/* btn container */}
       <div className="grid md:grid-cols-2 gap-8">
         {jobs.map((job) => {
