@@ -30,9 +30,21 @@ export default function PaginationContainer({
     router.push(`${pathname}?${params.toString()}`);
   };
 
+  const handleNextPage = () => {
+    let nextPage = currentPage + 1;
+    if (nextPage > totalPages) nextPage = 1;
+    handlePageChange(nextPage);
+  };
+
+  const handlePrevPage = () => {
+    let prevPage = currentPage - 1;
+    if (prevPage < 1) prevPage = totalPages;
+    handlePageChange(prevPage);
+  };
+
   return (
     <div className="flex gap-x-2">
-      <Button variant="outline">
+      <Button variant="outline" onClick={() => handlePrevPage()}>
         <ChevronLeft />
         prev
       </Button>
@@ -48,7 +60,7 @@ export default function PaginationContainer({
           </Button>
         );
       })}
-      <Button variant="outline">
+      <Button variant="outline" onClick={() => handleNextPage()}>
         next
         <ChevronRight />
       </Button>
