@@ -9,6 +9,11 @@ type PaginationProps = {
   totalPages: number;
 };
 
+type ButtonProps = {
+  page: number;
+  activeClass: boolean;
+};
+
 export default function PaginationContainer({
   currentPage,
   totalPages,
@@ -30,37 +35,103 @@ export default function PaginationContainer({
     router.push(`${pathname}?${params.toString()}`);
   };
 
-  const handleNextPage = () => {
-    let nextPage = currentPage + 1;
-    if (nextPage > totalPages) nextPage = 1;
-    handlePageChange(nextPage);
+  const addPageButton = ({ page, activeClass }: ButtonProps) => {
+    return (
+      <Button
+        key={page}
+        size="icon"
+        variant={activeClass ? 'default' : 'outline'}
+        onClick={() => handlePageChange(page)}
+      >
+        {page}
+      </Button>
+    );
   };
 
-  const handlePrevPage = () => {
-    let prevPage = currentPage - 1;
-    if (prevPage < 1) prevPage = totalPages;
-    handlePageChange(prevPage);
+  const renderPageButtons = () => {
+    const pageButtons = [];
+
+    // first page
+    pageButtons.push(
+      addPageButton({ page: 1, activeClass: currentPage === 1 })
+    );
+
+    // dots
+    if (currentPage > 3) {
+      pageButtons.push(
+        <Button size="icon" variant="outline" key="dots-1">
+          ...
+        </Button>
+      );
+    }
+
+    // one before current page
+    if (currentPage !== 1 && currentPage !== 2) {
+      pageButtons.push(
+        addPageButton({
+          page: currentPage - 1,
+          activeClass: false,
+        })
+      );
+    }
+
+    // current page
+    if (currentPage !== 1 && currentPage !== totalPages) {
+      pageButtons.push(
+        addPageButton({
+          page: currentPage,
+          activeClass: true,
+        })
+      );
+    }
+
+    // one after current page
+    if (currentPage !== totalPages && currentPage !== totalPages - 1) {
+      pageButtons.push(
+        addPageButton({ page: currentPage + 1, activeClass: false })
+      );
+    }
+
+    if (currentPage < totalPages - 2) {
+      pageButtons.push(
+        <Button size="icon" variant="outline" key="dots-2">
+          ...
+        </Button>
+      );
+    }
+
+    pageButtons.push(
+      addPageButton({
+        page: totalPages,
+        activeClass: currentPage === totalPages,
+      })
+    );
+
+    return pageButtons;
   };
 
   return (
     <div className="flex gap-x-2">
-      <Button variant="outline" onClick={() => handlePrevPage()}>
+      <Button
+        variant="outline"
+        onClick={() => {
+          let prevPage = currentPage - 1;
+          if (prevPage < 1) prevPage = totalPages;
+          handlePageChange(prevPage);
+        }}
+      >
         <ChevronLeft />
         prev
       </Button>
-      {pageButtons.map((page) => {
-        return (
-          <Button
-            key={page}
-            size={'icon'}
-            variant={currentPage === page ? 'default' : 'outline'}
-            onClick={() => handlePageChange(page)}
-          >
-            {page}
-          </Button>
-        );
-      })}
-      <Button variant="outline" onClick={() => handleNextPage()}>
+      {renderPageButtons()}
+      <Button
+        variant="outline"
+        onClick={() => {
+          let nextPage = currentPage + 1;
+          if (nextPage > totalPages) nextPage = 1;
+          handlePageChange(nextPage);
+        }}
+      >
         next
         <ChevronRight />
       </Button>
